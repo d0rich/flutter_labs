@@ -22,6 +22,27 @@ class _Lab1State extends State<Lab1> {
     });
   }
 
+  void _calcSubtract() {
+    setState(() {
+      this._result = double.parse(this._num1Controller.text) -
+          double.parse(this._num2Controller.text);
+    });
+  }
+
+  void _calcMultiply() {
+    setState(() {
+      this._result = double.parse(this._num1Controller.text) *
+          double.parse(this._num2Controller.text);
+    });
+  }
+
+  void _calcDivision() {
+    setState(() {
+      this._result = double.parse(this._num1Controller.text) /
+          double.parse(this._num2Controller.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +86,18 @@ class _Lab1State extends State<Lab1> {
                   OutlinedButton(
                       onPressed: this._calcAdd,
                       child: Icon(Icons.add)
+                  ),
+                  OutlinedButton(
+                      onPressed: this._calcSubtract,
+                      child: Text('---')
+                  ),
+                  OutlinedButton(
+                      onPressed: this._calcMultiply,
+                      child: Text('x')
+                  ),
+                  OutlinedButton(
+                      onPressed: this._calcDivision,
+                      child: Text('/')
                   )
                 ],
               ),

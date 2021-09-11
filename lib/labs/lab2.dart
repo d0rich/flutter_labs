@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class Lab2 extends StatefulWidget {
-  Lab2({Key? key, required this.title}) : super(key: key);
+class Lab3 extends StatefulWidget {
+  Lab3({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _Lab2State createState() => _Lab2State();
+  _Lab3State createState() => _Lab3State();
 }
 
-class _Lab2State extends State<Lab2> {
+class _Lab3State extends State<Lab3> {
   late List<String> _textBoxes = [];
   late Random rand = Random();
 

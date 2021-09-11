@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Lab1 extends StatefulWidget {
-  Lab1({Key? key, required this.title}) : super(key: key);
+class Lab2 extends StatefulWidget {
+  Lab2({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _Lab1State createState() => _Lab1State();
+  _Lab2State createState() => _Lab2State();
 }
 
-class _Lab1State extends State<Lab1> {
+class _Lab2State extends State<Lab2> {
   late TextEditingController _num1Controller = TextEditingController();
   late TextEditingController _num2Controller = TextEditingController();
   double _result = 0;

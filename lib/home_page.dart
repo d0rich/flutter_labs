@@ -18,19 +18,19 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Lab1(title: 'Lab1 Nikolay Dorofeev'))
+                    MaterialPageRoute(builder: (context) => Lab2(title: 'Lab 2 | Nikolay Dorofeev'))
                   );
                 },
-                child: Text('Lab 1')
+                child: Text('Lab 2')
             ),
             OutlinedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Lab2(title: 'Lab2 Nikolay Dorofeev'))
+                      MaterialPageRoute(builder: (context) => Lab3(title: 'Lab 3 | Nikolay Dorofeev'))
                   );
                 },
-                child: Text('Lab 2')
+                child: Text('Lab 3')
             )
           ],
         ),

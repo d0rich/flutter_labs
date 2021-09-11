@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:math';
 
 class Lab2 extends StatefulWidget {
@@ -14,7 +13,6 @@ class Lab2 extends StatefulWidget {
 class _Lab2State extends State<Lab2> {
   late List<String> _textBoxes = [];
   late Random rand = Random();
-  double _result = 0;
 
   void _addText() {
     setState(() {
@@ -41,15 +39,14 @@ class _Lab2State extends State<Lab2> {
                 )
               ],
             ),
-            Container(
-              height: 500,
+            Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.all(8),
                 itemCount: this._textBoxes.length,
                 itemBuilder: (BuildContext context, int index){
                   return Container(
                       height: 50,
-                      color: Colors.blueAccent,
+                      color: Colors.amber[300],
                       child: Center(child: Text(this._textBoxes[index]))
                   );
                 },

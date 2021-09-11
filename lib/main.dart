@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tpu_mobile_labs/labs/lab1.dart';
+import 'package:tpu_mobile_labs/home_page.dart';
 
 
 void main() {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Lab1(title: 'Lab1 Nikolay Dorofeev'),
+      home: HomePage(),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'labs/lab1.dart';
+import 'labs/lab2.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -20,7 +21,16 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => Lab1(title: 'Lab1 Nikolay Dorofeev'))
                   );
                 },
-                child: Text('Lab1')
+                child: Text('Lab 1')
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Lab2(title: 'Lab2 Nikolay Dorofeev'))
+                  );
+                },
+                child: Text('Lab 2')
             )
           ],
         ),

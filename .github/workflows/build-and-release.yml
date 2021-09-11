@@ -9,7 +9,7 @@ jobs:
     name: Build Apps
     runs-on: macos-latest
     steps:
-      - name: Export Release Timestamp
+      - name: Get version tag
         run: echo "APP_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Checkout repository
         uses: actions/checkout@v1

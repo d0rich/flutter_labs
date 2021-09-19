@@ -11,6 +11,10 @@ class MathSample{
     return this._sample;
   }
 
+  int get rightAnswer{
+    return this._rightAnswer;
+  }
+
   int? get answer{
     return this._factAnswer;
   }
@@ -36,7 +40,7 @@ class MathSample{
         }
         else {
           this._rightAnswer = secondNum - firstNum;
-          this._sample = "$firstNum - $secondNum";
+          this._sample = "$secondNum - $firstNum";
         }
         break;
       case 2: // *

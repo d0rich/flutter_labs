@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tpu_mobile_labs/support/createItemWidget.dart';
+import 'package:tpu_mobile_labs/support/item.dart';
 import 'package:tpu_mobile_labs/support/math_train.dart';
 import 'dart:math';
 
@@ -16,11 +18,29 @@ class Lab5 extends StatefulWidget {
 
 class _Lab5State extends State<Lab5> {
 
+  late List<Item> _items = [];
+
+  void _createItem(BuildContext context) async {
+    final Item newItem = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateItemWidget(title: "+ Item | Nikolay Dorofeev"))
+    );
+    setState(() {
+      _items.add(newItem);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _createItem(context);
+        },
+        child: const Icon(Icons.add),
       ),
       body: Center(
         child: Column(
@@ -36,20 +56,19 @@ class _Lab5State extends State<Lab5> {
                   ),
                 )
             ),
-            // Expanded(
-            //   child: ListView.separated(
-            //     padding: const EdgeInsets.all(8),
-            //     itemCount: this._answersHistory.length,
-            //     itemBuilder: (BuildContext context, int index){
-            //       return Container(
-            //           height: 50,
-            //           color: _answersHistory[index].isCorrectAnswer ? Colors.greenAccent : Colors.redAccent,
-            //           child: Center(child: Text("${_answersHistory[index].sample} = ${_answersHistory[index].rightAnswer} | ${_answersHistory[index].answer}"))
-            //       );
-            //     },
-            //     separatorBuilder: (BuildContext context, int index) => const Divider(),
-            //   ),
-            // )
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(8),
+                itemCount: this._items.length,
+                itemBuilder: (BuildContext context, int index){
+                  return Container(
+                      height: 50,
+                      child: Center(child: Text(_items[index].info))
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => const Divider(),
+              ),
+            )
           ],
         ),
       ),

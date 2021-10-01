@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'labs/lab5.dart';
 import 'labs/lab1.dart';
 import 'labs/lab2.dart';
 import 'labs/lab4.dart';
@@ -41,7 +42,16 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text('Lab 4')
-            )
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Lab5(title: 'Lab 5 | Nikolay Dorofeev'))
+                  );
+                },
+                child: Text('Lab 5')
+            ),
           ],
         ),
       ),

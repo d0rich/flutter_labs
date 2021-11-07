@@ -28,7 +28,9 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
     if (_kindController.text == ""
         || _titleController.text == ""
         || _priceController.text == ""
-        || _weightController.text == "") {
+        || _weightController.text == ""
+        || _photoPath == ''
+    ) {
       showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -45,6 +47,7 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
     }
     Navigator.pop(context,
         new Item(
+          0,
           _kindController.text,
           _titleController.text,
           double.parse(_priceController.text),
@@ -85,7 +88,7 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
         onPressed: _returnItem,
         child: Icon(Icons.check),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

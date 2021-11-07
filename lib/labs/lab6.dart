@@ -25,6 +25,7 @@ class Lab6 extends StatefulWidget {
 class _Lab6State extends State<Lab6> {
 
   late List<Item> _items = [];
+
   Future<Database> _db() async{
     return await openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
@@ -70,9 +71,37 @@ class _Lab6State extends State<Lab6> {
     );
     final db = await _db();
     await db.insert('items', ItemModel.fromItem(newItem).toMap());
-    setState(() {
-      _items.add(newItem);
-    });
+    fetchItems();
+  }
+
+  void Function()? _deleteItem(BuildContext context, int id){
+    return () => showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text("Confirm action"),
+          content: Text("Are you sure to delete item?"),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel")
+            ),
+            TextButton(
+                onPressed: () async {
+                  final db = await _db();
+                  await db.delete(
+                      'items',
+                      where: 'id = ?',
+                    whereArgs: [id]
+                  );
+                  fetchItems();
+                  Navigator.pop(context);
+                },
+                child: Text("Confirm")
+            ),
+
+          ],
+        )
+    );
   }
 
   @override
@@ -111,7 +140,11 @@ class _Lab6State extends State<Lab6> {
                       child: Row(
                         children: [
                           Image.file(File(_items[index].photo)),
-                          Center(child: Text(_items[index].info))
+                          Center(child: Text(_items[index].info)),
+                          OutlinedButton(
+                              onPressed: _deleteItem(context, _items[index].id),
+                              child: Icon(Icons.cancel)
+                          )
                         ],
                       )
 

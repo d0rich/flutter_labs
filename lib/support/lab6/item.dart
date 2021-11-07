@@ -22,4 +22,13 @@ class Item{
     _weight = weight;
     _photo = photo;
   }
+  static fromMap(Map<String, dynamic> map){
+    return new Item(
+        map['kind'],
+        map['title'],
+        map['price'],
+        map['weight'],
+        map['photo']
+    );
+  }
 }

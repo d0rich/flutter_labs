@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:tpu_mobile_labs/support/lab5/createItemWidget.dart';
-import 'package:tpu_mobile_labs/support/lab5/item.dart';
+import 'package:tpu_mobile_labs/support/lab6/createItemWidget.dart';
+import 'package:tpu_mobile_labs/support/lab6/item.dart';
 import 'package:tpu_mobile_labs/support/math_train.dart';
 import 'dart:math';
 
 Random rand = Random();
 
 
-class Lab5 extends StatefulWidget {
-  Lab5({Key? key, required this.title}) : super(key: key);
+class Lab6 extends StatefulWidget {
+  Lab6({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _Lab5State createState() => _Lab5State();
+  _Lab6State createState() => _Lab6State();
 }
 
-class _Lab5State extends State<Lab5> {
+class _Lab6State extends State<Lab6> {
 
   late List<Item> _items = [];
 

@@ -3,6 +3,7 @@ import 'labs/lab5.dart';
 import 'labs/lab1.dart';
 import 'labs/lab2.dart';
 import 'labs/lab4.dart';
+import 'labs/lab6.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -51,6 +52,15 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text('Lab 5')
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Lab6(title: 'Lab 6 | Nikolay Dorofeev'))
+                  );
+                },
+                child: Text('Lab 6')
             ),
           ],
         ),

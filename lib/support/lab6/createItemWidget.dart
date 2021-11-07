@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tpu_mobile_labs/support/item.dart';
+import 'package:tpu_mobile_labs/support/lab6/item.dart';
 
 class CreateItemWidget extends StatefulWidget {
   CreateItemWidget({Key? key, required this.title}) : super(key: key);

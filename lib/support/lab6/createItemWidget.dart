@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,7 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
   late TextEditingController _titleController = TextEditingController();
   late TextEditingController _priceController = TextEditingController();
   late TextEditingController _weightController = TextEditingController();
+  late String _photoPath = '';
 
   void _returnItem(){
     if (_kindController.text == ""
@@ -44,7 +48,8 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
           _kindController.text,
           _titleController.text,
           double.parse(_priceController.text),
-          double.parse(_weightController.text)
+          double.parse(_weightController.text),
+          _photoPath
         )
     );
   }
@@ -59,10 +64,13 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
 
     // Get a specific camera from the list of available cameras.
     final firstCamera = cameras.first;
-    Navigator.push(
+    final String photoPath = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera,))
     );
+    setState(() {
+      _photoPath = photoPath;
+    });
   }
 
   @override
@@ -81,6 +89,10 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.file(
+                File(_photoPath),
+              height: 200,
+            ),
             TextField(
               controller: this._kindController,
               decoration: InputDecoration(

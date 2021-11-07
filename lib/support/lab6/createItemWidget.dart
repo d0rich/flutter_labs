@@ -1,6 +1,9 @@
+import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tpu_mobile_labs/support/lab6/item.dart';
+import 'package:tpu_mobile_labs/support/lab6/takePictureScreen.dart';
 
 class CreateItemWidget extends StatefulWidget {
   CreateItemWidget({Key? key, required this.title}) : super(key: key);
@@ -43,6 +46,22 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
           double.parse(_priceController.text),
           double.parse(_weightController.text)
         )
+    );
+  }
+
+  Future<void> _takePhoto() async {
+    // Ensure that plugin services are initialized so that `availableCameras()`
+    // can be called before `runApp()`
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // Obtain a list of the available cameras on the device.
+    final cameras = await availableCameras();
+
+    // Get a specific camera from the list of available cameras.
+    final firstCamera = cameras.first;
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera,))
     );
   }
 
@@ -100,6 +119,7 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
                 FilteringTextInputFormatter.digitsOnly
               ],
             ),
+            OutlinedButton(onPressed: _takePhoto, child: Icon(Icons.photo_camera))
           ],
         ),
       ),

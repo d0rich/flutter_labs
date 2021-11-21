@@ -4,6 +4,7 @@ import 'labs/lab1.dart';
 import 'labs/lab2.dart';
 import 'labs/lab4.dart';
 import 'labs/lab6.dart';
+import 'labs/lab7.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -15,7 +16,8 @@ class HomePage extends StatelessWidget {
         title: Text('Home page | Nikolay Dorofeev'),
       ),
       body: Container(
-        child: Row(
+        child: GridView.count(
+          crossAxisCount: 2,
           children: [
             OutlinedButton(
                 onPressed: () {
@@ -61,6 +63,15 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text('Lab 6')
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Lab7(title: 'Lab 7 | Nikolay Dorofeev'))
+                  );
+                },
+                child: Text('Lab 7')
             ),
           ],
         ),

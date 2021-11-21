@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tpu_mobile_labs/support/lab4/math_train.dart';
+import 'package:tpu_mobile_labs/support/lab7/math_train.dart';
 import 'dart:math';
 
 Random rand = Random();
 
 
-class Lab4 extends StatefulWidget {
-  Lab4({Key? key, required this.title}) : super(key: key);
+class Lab7 extends StatefulWidget {
+  Lab7({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _Lab4State createState() => _Lab4State();
+  _Lab7State createState() => _Lab7State();
 }
 
-class _Lab4State extends State<Lab4> {
+class _Lab7State extends State<Lab7> {
   late MathSample _sampleNow = MathSample();
   late List<MathSample> _answersHistory = [];
   late List<int> _answers = [0, 0, 0];
@@ -60,27 +60,27 @@ class _Lab4State extends State<Lab4> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              margin: const EdgeInsets.all(30),
-              child: Text(
+                margin: const EdgeInsets.all(30),
+                child: Text(
                   this._sampleNow.sample,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold
-                ),
-              )
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold
+                  ),
+                )
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 OutlinedButton(
-                    onPressed: this._checkAnswer(0),
-                    child: Text(
-                        this._answers[0].toString(),
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold
-                        )
-                    ),
+                  onPressed: this._checkAnswer(0),
+                  child: Text(
+                      this._answers[0].toString(),
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold
+                      )
+                  ),
 
                 ),
                 OutlinedButton(

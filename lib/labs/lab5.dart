@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tpu_mobile_labs/support/lab5/createItemWidget.dart';
 import 'package:tpu_mobile_labs/support/lab5/item.dart';
-import 'package:tpu_mobile_labs/support/math_train.dart';
 import 'dart:math';
 
 Random rand = Random();

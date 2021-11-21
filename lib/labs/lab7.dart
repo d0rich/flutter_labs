@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tpu_mobile_labs/support/lab7/math_train.dart';
-import 'dart:math';
-
-Random rand = Random();
-
+import 'package:flutter/services.dart';
 
 class Lab7 extends StatefulWidget {
   Lab7({Key? key, required this.title}) : super(key: key);
@@ -15,119 +11,95 @@ class Lab7 extends StatefulWidget {
 }
 
 class _Lab7State extends State<Lab7> {
-  late MathSample _sampleNow = MathSample();
-  late List<MathSample> _answersHistory = [];
-  late List<int> _answers = [0, 0, 0];
-  late int _rightCounter = 0;
-  late int _wrongCounter = 0;
+  late TextEditingController _num1Controller = TextEditingController();
+  late TextEditingController _num2Controller = TextEditingController();
+  double _result = 0;
 
-  void _setAnswers(){
+  void _calcAdd() {
     setState(() {
-      _answers = [];
-      _answers.add(this._sampleNow.rightAnswer);
-      _answers.add(this._sampleNow.rightAnswer + rand.nextInt(21) - 10);
-      _answers.add(this._sampleNow.rightAnswer + rand.nextInt(21) - 10);
-      _answers.sort();
+      this._result = double.parse(this._num1Controller.text) +
+          double.parse(this._num2Controller.text);
     });
   }
 
-  _checkAnswer(int answerIndex){
-    return () => setState(() {
-      if (_sampleNow.checkAnswer(this._answers[answerIndex])){
-        _rightCounter += 1;
-      }
-      else {
-        _wrongCounter += 1;
-      }
-      _answersHistory.insert(0, _sampleNow);
-      if (_answersHistory.length > 10)
-        _answersHistory = _answersHistory.sublist(0, 10);
-      _sampleNow = MathSample();
-      _setAnswers();
+  void _calcSubtract() {
+    setState(() {
+      this._result = double.parse(this._num1Controller.text) -
+          double.parse(this._num2Controller.text);
+    });
+  }
+
+  void _calcMultiply() {
+    setState(() {
+      this._result = double.parse(this._num1Controller.text) *
+          double.parse(this._num2Controller.text);
+    });
+  }
+
+  void _calcDivision() {
+    setState(() {
+      this._result = double.parse(this._num1Controller.text) /
+          double.parse(this._num2Controller.text);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    this._setAnswers();
-
     return Scaffold(
       appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-                margin: const EdgeInsets.all(30),
-                child: Text(
-                  this._sampleNow.sample,
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold
-                  ),
-                )
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  onPressed: this._checkAnswer(0),
-                  child: Text(
-                      this._answers[0].toString(),
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold
-                      )
-                  ),
-
-                ),
-                OutlinedButton(
-                    onPressed: this._checkAnswer(1),
-                    child: Text(
-                        this._answers[1].toString(),
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold
-                        )
-                    )
-                ),
-                OutlinedButton(
-                    onPressed: this._checkAnswer(2),
-                    child: Text(
-                        this._answers[2].toString(),
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold
-                        )
-                    )
-                )
+            TextField(
+              controller: this._num1Controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Number 1',
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
               ],
             ),
-            Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: Text("Right: $_rightCounter"),
-                ),
-                Container(
-                  child: Text("Wrong: $_wrongCounter"),
-                )
+            TextField(
+              controller: this._num2Controller,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Number 2'
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
               ],
             ),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemCount: this._answersHistory.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Container(
-                      height: 50,
-                      color: _answersHistory[index].isCorrectAnswer ? Colors.greenAccent : Colors.redAccent,
-                      child: Center(child: Text("${_answersHistory[index].sample} = ${_answersHistory[index].rightAnswer} | ${_answersHistory[index].answer}"))
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => const Divider(),
+            Text(
+              'Result: $_result',
+            ),
+            Center(
+              child: Row(
+                children: [
+                  OutlinedButton(
+                      onPressed: this._calcAdd,
+                      child: Icon(Icons.add)
+                  ),
+                  OutlinedButton(
+                      onPressed: this._calcSubtract,
+                      child: Text('---')
+                  ),
+                  OutlinedButton(
+                      onPressed: this._calcMultiply,
+                      child: Text('x')
+                  ),
+                  OutlinedButton(
+                      onPressed: this._calcDivision,
+                      child: Text('/')
+                  )
+                ],
               ),
             )
           ],

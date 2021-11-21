@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tpu_mobile_labs/labs/lab7.dart';
 import 'labs/lab5.dart';
 import 'labs/lab1.dart';
 import 'labs/lab2.dart';
 import 'labs/lab4.dart';
 import 'labs/lab6.dart';
-import 'labs/lab7.dart';
+import 'labs/lab8.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         child: GridView.count(
-          crossAxisCount: 2,
+          crossAxisCount: 3,
           children: [
             OutlinedButton(
                 onPressed: () {
@@ -72,6 +73,15 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text('Lab 7')
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Lab8(title: 'Lab 8 | Nikolay Dorofeev'))
+                  );
+                },
+                child: Text('Lab 8')
             ),
           ],
         ),

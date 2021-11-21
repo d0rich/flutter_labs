@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tpu_mobile_labs/support/lab7/location_point.dart';
 
 class Lab7 extends StatefulWidget {
   Lab7({Key? key, required this.title}) : super(key: key);
@@ -11,35 +12,18 @@ class Lab7 extends StatefulWidget {
 }
 
 class _Lab7State extends State<Lab7> {
-  late TextEditingController _num1Controller = TextEditingController();
-  late TextEditingController _num2Controller = TextEditingController();
-  double _result = 0;
+  late TextEditingController _latController = TextEditingController();
+  late TextEditingController _longController = TextEditingController();
+  late TextEditingController _nameController = TextEditingController();
+  late List<LocationPoint> _points = [];
 
-  void _calcAdd() {
+  void _addPoint() {
     setState(() {
-      this._result = double.parse(this._num1Controller.text) +
-          double.parse(this._num2Controller.text);
-    });
-  }
-
-  void _calcSubtract() {
-    setState(() {
-      this._result = double.parse(this._num1Controller.text) -
-          double.parse(this._num2Controller.text);
-    });
-  }
-
-  void _calcMultiply() {
-    setState(() {
-      this._result = double.parse(this._num1Controller.text) *
-          double.parse(this._num2Controller.text);
-    });
-  }
-
-  void _calcDivision() {
-    setState(() {
-      this._result = double.parse(this._num1Controller.text) /
-          double.parse(this._num2Controller.text);
+      this._points.add(new LocationPoint(
+          lat: double.parse(_latController.text),
+          long: double.parse(_longController.text),
+          name: _nameController.text
+      ));
     });
   }
 
@@ -56,53 +40,54 @@ class _Lab7State extends State<Lab7> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
-              controller: this._num1Controller,
+              controller: this._latController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Number 1',
+                labelText: 'Latitude',
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
+              keyboardType: TextInputType.number
             ),
             TextField(
-              controller: this._num2Controller,
+              controller: this._longController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Number 2'
+                  labelText: 'Longitude'
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
+              keyboardType: TextInputType.number
             ),
-            Text(
-              'Result: $_result',
+            TextField(
+              controller: this._nameController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Name'
+              ),
+              keyboardType: TextInputType.text
             ),
             Center(
               child: Row(
                 children: [
-                  OutlinedButton(
-                      onPressed: this._calcAdd,
-                      child: Icon(Icons.add)
-                  ),
-                  OutlinedButton(
-                      onPressed: this._calcSubtract,
-                      child: Text('---')
-                  ),
-                  OutlinedButton(
-                      onPressed: this._calcMultiply,
-                      child: Text('x')
-                  ),
-                  OutlinedButton(
-                      onPressed: this._calcDivision,
-                      child: Text('/')
-                  )
-                ],
+                    OutlinedButton(
+                    onPressed: this._addPoint,
+                    child: Icon(Icons.add)
+                    ),
+                ]
+              )
+            ),
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(8),
+                itemCount: this._points.length,
+                itemBuilder: (BuildContext context, int index){
+                  return Container(
+                      height: 50,
+                      color: Colors.amber[300],
+                      child: Center(child: Text(this._points[index].toString()))
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => const Divider(),
               ),
             )
-          ],
+          ]
         ),
       ),
     );

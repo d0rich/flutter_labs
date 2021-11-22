@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 import 'package:tpu_mobile_labs/support/lab7/location_point.dart';
 
@@ -20,6 +24,7 @@ class _Lab7State extends State<Lab7> {
 
   late Location _locationService = new Location();
   late LocationPoint _locationData = new LocationPoint(lat: 0, long: 0, name: "name");
+  late Timer _timer;
 
   // Проверка на разрешение геолокации
   Future<bool> _checkLocationServiceStatus() async{
@@ -55,9 +60,38 @@ class _Lab7State extends State<Lab7> {
     });
   }
 
-  void _checkNearObjects() async{
-    if (! await _checkLocationServiceStatus()) return;
+  void _checkNearObjects() {
+    final Distance distance = Distance();
 
+    for (LocationPoint point in _points){
+      var d = distance(new LatLng(point.lat, point.long),
+          new LatLng(_locationData.lat, _locationData.long));
+      log("Check " + point.name);
+      if (d <= 100) {
+          setState(() {
+            _timer.cancel();
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: Text("You are near some object"),
+                content: Text("You are near " + point.name + "!\n$d meters"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
+                          _getLocation();
+                          _checkNearObjects();
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text("Ok"))
+                ],
+              )
+          );
+        }
+
+    }
   }
 
   void _addPoint() {
@@ -73,7 +107,21 @@ class _Lab7State extends State<Lab7> {
   @override
   void initState() {
     super.initState();
-    _getLocation();
+    setState(() {
+      _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
+        _getLocation();
+        _checkNearObjects();
+      });
+    });
+
+  }
+
+  @override
+  void dispose() {
+    setState(() {
+      _timer.cancel();
+    });
+    super.dispose();
   }
 
   @override

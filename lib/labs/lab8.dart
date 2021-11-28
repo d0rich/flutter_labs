@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tpu_mobile_labs/support/lab8/ChooseOperationWidget.dart';
+import 'package:tpu_mobile_labs/support/lab8/SolveMathExampleWidget.dart';
 import 'package:tpu_mobile_labs/support/lab8/math_train.dart';
 import 'dart:math';
-
-Random rand = Random();
 
 
 class Lab8 extends StatefulWidget {
@@ -17,15 +17,16 @@ class Lab8 extends StatefulWidget {
 class _Lab8State extends State<Lab8> {
   late Operation _operation = Operation.add;
   late MathSample _sampleNow = MathSample(_operation);
-  late List<MathSample> _answersHistory = [];
   late List<int> _answers = [0, 0, 0];
+
+  late List<MathSample> _answersHistory = [];
   late int _rightCounter = 0;
   late int _wrongCounter = 0;
 
   _setOperation(Operation operation){
     return () => setState(() {
       _operation = operation;
-      _sampleNow = MathSample(_operation);
+      _sampleNow = MathSample(operation);
       _setAnswers();
     });
   }
@@ -42,23 +43,30 @@ class _Lab8State extends State<Lab8> {
 
   _checkAnswer(int answerIndex){
     return () => setState(() {
-      if (_sampleNow.checkAnswer(this._answers[answerIndex])){
-        _rightCounter += 1;
-      }
-      else {
-        _wrongCounter += 1;
-      }
-      _answersHistory.insert(0, _sampleNow);
-      if (_answersHistory.length > 10)
-        _answersHistory = _answersHistory.sublist(0, 10);
+      _sampleNow.checkAnswer(this._answers[answerIndex]);
+      _writeAnswerToHistory(_sampleNow);
       _sampleNow = MathSample(_operation);
       _setAnswers();
     });
   }
 
+  _writeAnswerToHistory(MathSample sample){
+    setState(() {
+      if (sample.isCorrectAnswer){
+        _rightCounter += 1;
+      }
+      else {
+        _wrongCounter += 1;
+      }
+      _answersHistory.insert(0, sample);
+      if (_answersHistory.length > 10)
+        _answersHistory = _answersHistory.sublist(0, 10);
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    this._setAnswers();
 
     return Scaffold(
       appBar: AppBar(
@@ -68,76 +76,8 @@ class _Lab8State extends State<Lab8> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-                margin: const EdgeInsets.only(top: 30, bottom: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                        onPressed: _setOperation(Operation.add),
-                        child: Text('+', style: TextStyle(fontSize: 40),)
-                    ),
-                    OutlinedButton(
-                        onPressed: _setOperation(Operation.subtract),
-                        child: Text('-', style: TextStyle(fontSize: 40),)
-                    ),
-                    OutlinedButton(
-                        onPressed: _setOperation(Operation.multiply),
-                        child: Text('*', style: TextStyle(fontSize: 40),)
-                    ),
-                    OutlinedButton(
-                        onPressed: _setOperation(Operation.divide),
-                        child: Text('/', style: TextStyle(fontSize: 40),)
-                    ),
-                  ],
-                )
-            ),
-            Container(
-                margin: const EdgeInsets.all(30),
-                child: Text(
-                  this._sampleNow.sample,
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold
-                  ),
-                )
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  onPressed: this._checkAnswer(0),
-                  child: Text(
-                      this._answers[0].toString(),
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold
-                      )
-                  ),
-
-                ),
-                OutlinedButton(
-                    onPressed: this._checkAnswer(1),
-                    child: Text(
-                        this._answers[1].toString(),
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold
-                        )
-                    )
-                ),
-                OutlinedButton(
-                    onPressed: this._checkAnswer(2),
-                    child: Text(
-                        this._answers[2].toString(),
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold
-                        )
-                    )
-                )
-              ],
-            ),
+            ChooseOperationWidget(switchOperation: _setOperation),
+            SolveMathExampleWidget(answers: _answers, mathSample: _sampleNow, onAnswer: _checkAnswer),
             Row(
               children: [
                 Container(

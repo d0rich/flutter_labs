@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 
 Random rand = Random();
 
@@ -8,6 +9,13 @@ enum Operation{
   multiply,
   divide
 }
+
+class OperationNotification extends Notification{
+  final Operation operation;
+
+  const OperationNotification({required this.operation});
+}
+
 
 class MathSample{
   late String _sample;

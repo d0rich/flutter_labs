@@ -22,7 +22,15 @@ class _Lab8State extends State<Lab8> {
   late int _rightCounter = 0;
   late int _wrongCounter = 0;
 
-  void _setAnswers(){
+  _setOperation(Operation operation){
+    return () => setState(() {
+      _operation = operation;
+      _sampleNow = MathSample(_operation);
+      _setAnswers();
+    });
+  }
+
+  _setAnswers(){
     setState(() {
       _answers = [];
       _answers.add(this._sampleNow.rightAnswer);
@@ -60,6 +68,30 @@ class _Lab8State extends State<Lab8> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Container(
+                margin: const EdgeInsets.only(top: 30, bottom: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OutlinedButton(
+                        onPressed: _setOperation(Operation.add),
+                        child: Text('+', style: TextStyle(fontSize: 40),)
+                    ),
+                    OutlinedButton(
+                        onPressed: _setOperation(Operation.subtract),
+                        child: Text('-', style: TextStyle(fontSize: 40),)
+                    ),
+                    OutlinedButton(
+                        onPressed: _setOperation(Operation.multiply),
+                        child: Text('*', style: TextStyle(fontSize: 40),)
+                    ),
+                    OutlinedButton(
+                        onPressed: _setOperation(Operation.divide),
+                        child: Text('/', style: TextStyle(fontSize: 40),)
+                    ),
+                  ],
+                )
+            ),
             Container(
                 margin: const EdgeInsets.all(30),
                 child: Text(

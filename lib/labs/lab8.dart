@@ -15,7 +15,8 @@ class Lab8 extends StatefulWidget {
 }
 
 class _Lab8State extends State<Lab8> {
-  late MathSample _sampleNow = MathSample();
+  late Operation _operation = Operation.add;
+  late MathSample _sampleNow = MathSample(_operation);
   late List<MathSample> _answersHistory = [];
   late List<int> _answers = [0, 0, 0];
   late int _rightCounter = 0;
@@ -42,7 +43,7 @@ class _Lab8State extends State<Lab8> {
       _answersHistory.insert(0, _sampleNow);
       if (_answersHistory.length > 10)
         _answersHistory = _answersHistory.sublist(0, 10);
-      _sampleNow = MathSample();
+      _sampleNow = MathSample(_operation);
       _setAnswers();
     });
   }

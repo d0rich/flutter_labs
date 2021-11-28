@@ -30,15 +30,15 @@ class MathSample{
     return this._factAnswer == this._rightAnswer;
   }
 
-  MathSample(){
-    switch (rand.nextInt(4)){
-      case 0: // +
+  MathSample(Operation operation){
+    switch (operation){
+      case Operation.add: // +
         int firstNum = rand.nextInt(50) + 1;
         int secondNum = rand.nextInt(50) + 1;
         this._rightAnswer = firstNum + secondNum;
         this._sample = "$firstNum + $secondNum";
         break;
-      case 1: // -
+      case Operation.subtract: // -
         int firstNum = rand.nextInt(100) + 1;
         int secondNum = rand.nextInt(100) + 1;
         if (firstNum > secondNum){
@@ -50,13 +50,13 @@ class MathSample{
           this._sample = "$secondNum - $firstNum";
         }
         break;
-      case 2: // *
+      case Operation.multiply: // *
         int firstNum = rand.nextInt(20) + 1;
         int secondNum = rand.nextInt(20) + 1;
         this._rightAnswer = firstNum * secondNum;
         this._sample = "$firstNum * $secondNum";
         break;
-      default: // /
+      case Operation.divide: // /
         this._rightAnswer = rand.nextInt(20) + 1;
         int secondNum = rand.nextInt(20) + 1;
         int firstNum = this._rightAnswer * secondNum;

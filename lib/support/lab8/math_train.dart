@@ -2,6 +2,13 @@ import 'dart:math';
 
 Random rand = Random();
 
+enum Operation{
+  add,
+  subtract,
+  multiply,
+  divide
+}
+
 class MathSample{
   late String _sample;
   late int _rightAnswer;

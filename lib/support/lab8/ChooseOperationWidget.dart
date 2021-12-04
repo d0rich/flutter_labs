@@ -12,27 +12,37 @@ class ChooseOperationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.only(top: 30, bottom: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
           children: [
-            OutlinedButton(
-                onPressed: switchOperation(Operation.add),
-                child: Text('+', style: TextStyle(fontSize: 40),)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                    onPressed: switchOperation(Operation.add),
+                    child: Text('+', style: TextStyle(fontSize: 40),)
+                ),
+                OutlinedButton(
+                    onPressed: switchOperation(Operation.subtract),
+                    child: Text('-', style: TextStyle(fontSize: 40),)
+                ),
+              ],
             ),
-            OutlinedButton(
-                onPressed: switchOperation(Operation.subtract),
-                child: Text('-', style: TextStyle(fontSize: 40),)
-            ),
-            OutlinedButton(
-                onPressed: switchOperation(Operation.multiply),
-                child: Text('*', style: TextStyle(fontSize: 40),)
-            ),
-            OutlinedButton(
-                onPressed: switchOperation(Operation.divide),
-                child: Text('/', style: TextStyle(fontSize: 40),)
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                    onPressed: switchOperation(Operation.multiply),
+                    child: Text('*', style: TextStyle(fontSize: 40),)
+                ),
+                OutlinedButton(
+                    onPressed: switchOperation(Operation.divide),
+                    child: Text('/', style: TextStyle(fontSize: 40),)
+                ),
+              ],
+            )
           ],
         )
+
     );
   }
 }

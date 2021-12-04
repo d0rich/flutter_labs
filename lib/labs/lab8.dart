@@ -76,8 +76,13 @@ class _Lab8State extends State<Lab8> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ChooseOperationWidget(switchOperation: _setOperation),
-            SolveMathExampleWidget(answers: _answers, mathSample: _sampleNow, onAnswer: _checkAnswer),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ChooseOperationWidget(switchOperation: _setOperation),
+                SolveMathExampleWidget(answers: _answers, mathSample: _sampleNow, onAnswer: _checkAnswer),
+              ],
+            ),
             Row(
               children: [
                 Container(

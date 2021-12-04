@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tpu_mobile_labs/support/lab9/GithubDetailsWidget.dart';
+import 'package:tpu_mobile_labs/support/lab9/GithubRepository.dart';
 import 'dart:math';
+
+import 'package:tpu_mobile_labs/support/lab9/SearchGithubWidget.dart';
+import 'package:tpu_mobile_labs/support/lab9/SearchResultsWidget.dart';
 
 class Lab9 extends StatefulWidget {
   Lab9({Key? key, required this.title}) : super(key: key);
@@ -11,12 +16,18 @@ class Lab9 extends StatefulWidget {
 }
 
 class _Lab9State extends State<Lab9> {
-  late List<String> _textBoxes = [];
-  late Random rand = Random();
+  late List<GithubRep> _searchResults = [];
+  late GithubRep? _rep = null;
 
-  void _addText() {
-    setState(() {
-      this._textBoxes.add(rand.nextInt(100).toString());
+  displayResults(List<GithubRep> results){
+    return () => setState((){
+      _searchResults = results;
+    });
+  }
+
+  showDetails(GithubRep rep){
+    return () => setState((){
+      _rep = rep;
     });
   }
 
@@ -31,29 +42,9 @@ class _Lab9State extends State<Lab9> {
       body: Container(
         child: Column(
           children: <Widget>[
-            Row(
-              children: [
-                OutlinedButton(
-                    onPressed: this._addText,
-                    child: Text('Add Number')
-                )
-              ],
-            ),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemCount: this._textBoxes.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Container(
-                      height: 50,
-                      color: Colors.amber[300],
-                      child: Center(child: Text(this._textBoxes[index]))
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => const Divider(),
-              ),
-            )
-
+            SearchGithubWidget(returnResults: displayResults),
+            GithubDetailsWidget(rep: _rep),
+            SearchResultsWidget(results: _searchResults, pickRep: showDetails)
           ],
         ),
       ),

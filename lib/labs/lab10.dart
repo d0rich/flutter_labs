@@ -15,6 +15,7 @@ class Lab10 extends StatefulWidget {
 }
 
 class _Lab10State extends State<Lab10> {
+  static const service = MethodChannel('tpu_labs/service');
 
   @override
   void initState() {
@@ -23,9 +24,11 @@ class _Lab10State extends State<Lab10> {
   }
 
   startService() async {
+    await service.invokeMethod('startService');
   }
 
   stopService() async {
+    await service.invokeMethod('stopService');
   }
 
   @override

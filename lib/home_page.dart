@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tpu_mobile_labs/labs/lab7.dart';
 import 'package:tpu_mobile_labs/labs/lab9.dart';
+import 'labs/lab11.dart';
 import 'labs/lab5.dart';
 import 'labs/lab1.dart';
 import 'labs/lab2.dart';
@@ -92,6 +93,15 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text('Lab 9')
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Lab11(title: 'Lab 11 | Nikolay Dorofeev'))
+                  );
+                },
+                child: Text('Lab 11')
             ),
           ],
         ),

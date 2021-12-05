@@ -64,10 +64,14 @@ class _Lab8State extends State<Lab8> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _setAnswers();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

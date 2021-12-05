@@ -18,6 +18,8 @@ class _Lab10State extends State<Lab10> {
   static const _methodChannel = MethodChannel('tpu_labs/methods');
   static const _eventChannel = EventChannel('tpu_labs/stream');
   late int _counter = 0;
+  late TextEditingController _delayController = TextEditingController();
+  late TextEditingController _startValueController = TextEditingController();
 
   @override
   void initState() {
@@ -44,6 +46,18 @@ class _Lab10State extends State<Lab10> {
     await _methodChannel.invokeMethod('stopService');
   }
 
+  setDelay() async {
+    await _methodChannel.invokeMethod('setDelay', int.parse(_delayController.text));
+  }
+
+  restart() async {
+    await _methodChannel.invokeMethod('restart');
+  }
+
+  setStartValue() async {
+    await _methodChannel.invokeMethod('setStartValue', int.parse(_startValueController.text));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,17 +68,77 @@ class _Lab10State extends State<Lab10> {
         child: Column(
           children: [
             Text('Counter: $_counter'),
-            OutlinedButton(
-                onPressed: startService,
-                child: Text('Start Service')
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                OutlinedButton(
+                    onPressed: startService,
+                    child: Text('Start Service')
+                ),
+                OutlinedButton(
+                    onPressed: getCounter,
+                    child: Text('Get Counter')
+                ),
+                OutlinedButton(
+                    onPressed: stopService,
+                    child: Text('Stop Service')
+                )
+              ]
             ),
-            OutlinedButton(
-                onPressed: getCounter,
-                child: Text('Get Counter')
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 200,
+                    child: TextField(
+                      controller: this._delayController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Interval',
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                    )
+                  ),
+                  OutlinedButton(
+                      onPressed: setDelay,
+                      child: Text('Set Interval')
+                  )
+                ]
             ),
-            OutlinedButton(
-                onPressed: stopService,
-                child: Text('Stop Service')
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 200,
+                    child: TextField(
+                      controller: this._startValueController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Start Value',
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                    ),
+                  ),
+                  OutlinedButton(
+                      onPressed: setStartValue,
+                      child: Text('Set Start Value')
+                  )
+                ]
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                OutlinedButton(
+                    onPressed: restart,
+                    child: Text('Restart')
+                )
+              ],
             )
           ],
         )

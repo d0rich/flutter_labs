@@ -52,6 +52,18 @@ class MainActivity: FlutterActivity() {
                 "getCounter" -> {
                     result.success(myService!!.getCounter())
                 }
+                "setDelay" -> {
+                    myService!!.setDelay(call.arguments as Int)
+                    result.success(call.arguments)
+                }
+                "restart" -> {
+                    myService!!.restart()
+                    result.success(null)
+                }
+                "setStartValue" -> {
+                    myService!!.setStartValue(call.arguments as Int)
+                    result.success(call.arguments)
+                }
                 else -> {
                     result.notImplemented()
                 }
@@ -87,21 +99,23 @@ class TimeService : Service() {
     private var counter = 0
     private lateinit var job: Job
     private val myBinder = MyBinder()
+    private var countDelay = 1000
+    private var startValue = 0
 
 
     override fun onBind(intent: Intent?): IBinder? {
         return myBinder
     }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        restart()
         job = GlobalScope.launch {
             while (true) {
-                delay(1000)
+                delay(countDelay.toLong())
                 Log.d("SERVICE", "Timer Is Ticking: " + counter)
                 counter++
                 val intent = Intent(BROADCAST_TIME_EVENT);
                 intent.putExtra("counter", counter);
                 sendBroadcast(intent);
-
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -120,6 +134,30 @@ class TimeService : Service() {
 
     fun getCounter(): Int {
         return counter
+    }
+
+    fun setDelay(newDelay: Int){
+        val isRunning = job.isActive
+        if (isRunning) job.cancel()
+        this.countDelay = newDelay
+        if (isRunning) job = GlobalScope.launch {
+            while (true) {
+                delay(countDelay.toLong())
+                Log.d("SERVICE", "Timer Is Ticking: " + counter)
+                counter++
+                val intent = Intent(BROADCAST_TIME_EVENT);
+                intent.putExtra("counter", counter);
+                sendBroadcast(intent);
+            }
+        }
+    }
+
+    fun restart(){
+        this.counter = this.startValue
+    }
+
+    fun setStartValue(newStartValue: Int){
+        this.startValue = newStartValue
     }
 
 }

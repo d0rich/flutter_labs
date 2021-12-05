@@ -15,28 +15,33 @@ class Lab10 extends StatefulWidget {
 }
 
 class _Lab10State extends State<Lab10> {
-  static const service = MethodChannel('tpu_labs/service');
+  static const _methodChannel = MethodChannel('tpu_labs/methods');
+  static const _eventChannel = EventChannel('tpu_labs/stream');
   late int _counter = 0;
 
   @override
   void initState() {
-
+    _eventChannel.receiveBroadcastStream()..listen((event) {
+      setState(() {
+        _counter = event;
+      });
+    });
     super.initState();
   }
 
   startService() async {
-    await service.invokeMethod('startService');
+    await _methodChannel.invokeMethod('startService');
   }
 
   getCounter() async {
-    final int result = await service.invokeMethod('getCounter');
+    final int result = await _methodChannel.invokeMethod('getCounter');
     setState(() {
       _counter = result;
     });
   }
 
   stopService() async {
-    await service.invokeMethod('stopService');
+    await _methodChannel.invokeMethod('stopService');
   }
 
   @override

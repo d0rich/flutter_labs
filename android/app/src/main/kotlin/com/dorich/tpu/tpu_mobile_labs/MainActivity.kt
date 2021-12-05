@@ -1,25 +1,24 @@
 package com.dorich.tpu.tpu_mobile_labs
 
 import android.app.Service
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import android.widget.TextView
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+const val BROADCAST_TIME_EVENT = "com.example.lab09.timeevent"
 
 class MainActivity: FlutterActivity() {
-    private val CHANNEL = "tpu_labs/service"
 
     var myService: TimeService? = null
     var isBound = false
@@ -36,7 +35,7 @@ class MainActivity: FlutterActivity() {
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "tpu_labs/methods").setMethodCallHandler {
             call, result ->
             when (call.method){
                 "startService" -> {
@@ -58,6 +57,29 @@ class MainActivity: FlutterActivity() {
                 }
             }
         }
+
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, "tpu_labs/stream").setStreamHandler(
+                object: EventChannel.StreamHandler {
+
+                    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                        val receiver: BroadcastReceiver? = object : BroadcastReceiver() {
+                            // Получено широковещательное сообщение
+                            override fun onReceive(context: Context?, intent: Intent) {
+                                events?.success(intent.getIntExtra("counter", 0))
+                            }
+                        }
+                        // Фильтр для ресивера
+                        val filter = IntentFilter(BROADCAST_TIME_EVENT)
+                        // Регистрация ресивера и фильтра
+                        registerReceiver(receiver, filter)
+                    }
+
+                    override fun onCancel(p0: Any) {
+
+                    }
+
+                }
+        )
     }
 }
 
@@ -76,6 +98,10 @@ class TimeService : Service() {
                 delay(1000)
                 Log.d("SERVICE", "Timer Is Ticking: " + counter)
                 counter++
+                val intent = Intent(BROADCAST_TIME_EVENT);
+                intent.putExtra("counter", counter);
+                sendBroadcast(intent);
+
             }
         }
         return super.onStartCommand(intent, flags, startId)

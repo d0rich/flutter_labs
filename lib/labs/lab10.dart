@@ -16,6 +16,7 @@ class Lab10 extends StatefulWidget {
 
 class _Lab10State extends State<Lab10> {
   static const service = MethodChannel('tpu_labs/service');
+  late int _counter = 0;
 
   @override
   void initState() {
@@ -25,6 +26,13 @@ class _Lab10State extends State<Lab10> {
 
   startService() async {
     await service.invokeMethod('startService');
+  }
+
+  getCounter() async {
+    final int result = await service.invokeMethod('getCounter');
+    setState(() {
+      _counter = result;
+    });
   }
 
   stopService() async {
@@ -40,9 +48,14 @@ class _Lab10State extends State<Lab10> {
       body: Container(
         child: Column(
           children: [
+            Text('Counter: $_counter'),
             OutlinedButton(
                 onPressed: startService,
                 child: Text('Start Service')
+            ),
+            OutlinedButton(
+                onPressed: getCounter,
+                child: Text('Get Counter')
             ),
             OutlinedButton(
                 onPressed: stopService,

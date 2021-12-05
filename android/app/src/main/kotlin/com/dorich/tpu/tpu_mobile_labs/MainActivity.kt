@@ -1,7 +1,11 @@
 package com.dorich.tpu.tpu_mobile_labs
 
 import android.app.Service
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.NonNull
@@ -17,6 +21,19 @@ import kotlinx.coroutines.launch
 class MainActivity: FlutterActivity() {
     private val CHANNEL = "tpu_labs/service"
 
+    var myService: TimeService? = null
+    var isBound = false
+    private val myConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as TimeService.MyBinder
+            myService = binder.getService()
+            isBound = true
+        }
+        override fun onServiceDisconnected(name: ComponentName) {
+            isBound = false
+        }
+    }
+
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
@@ -24,11 +41,17 @@ class MainActivity: FlutterActivity() {
             when (call.method){
                 "startService" -> {
                     startService(Intent(this, TimeService::class.java))
-                    result.success(null);
+                    bindService(Intent(this, TimeService::class.java),
+                            myConnection, Context.BIND_AUTO_CREATE)
+                    result.success(null)
                 }
                 "stopService" -> {
                     stopService(Intent(this, TimeService::class.java))
-                    result.success(null);
+                    unbindService(myConnection)
+                    result.success(null)
+                }
+                "getCounter" -> {
+                    result.success(myService!!.getCounter())
                 }
                 else -> {
                     result.notImplemented()
@@ -41,9 +64,11 @@ class MainActivity: FlutterActivity() {
 class TimeService : Service() {
     private var counter = 0
     private lateinit var job: Job
+    private val myBinder = MyBinder()
+
 
     override fun onBind(intent: Intent?): IBinder? {
-        return null
+        return myBinder
     }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         job = GlobalScope.launch {
@@ -60,4 +85,15 @@ class TimeService : Service() {
         job.cancel()
         super.onDestroy()
     }
+
+    inner class MyBinder : Binder() {
+        fun getService() : TimeService {
+            return this@TimeService
+        }
+    }
+
+    fun getCounter(): Int {
+        return counter
+    }
+
 }
